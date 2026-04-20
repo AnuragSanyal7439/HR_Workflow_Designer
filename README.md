@@ -1,148 +1,114 @@
-# HR Workflow Designer
+HR Workflow Management Module
 
-## Overview
+Introduction
 
-HR Workflow Designer is a React and TypeScript workflow-building application for creating, configuring, validating, simulating, importing, and exporting HR process flows. It provides a drag-and-drop canvas powered by React Flow, centralized workflow state with Zustand, and a modular architecture designed for adding more node types and workflow capabilities over time.
+This project is a scalable and modular workflow builder designed for HR teams to visually create, validate, and simulate business processes. It emphasizes clarity, real-time interaction, and a maintainable architecture, reflecting modern frontend development practices used in real-world applications.
 
-The current implementation focuses on a clean editor experience for HR-style workflows such as onboarding, leave approval, task assignment, approvals, and automated steps.
+Core Features
 
-## Features
+Intuitive drag-and-drop interface for creating nodes and connections
+Dynamic node configuration with built-in validation
+Real-time workflow validation, including structure, connectivity, and cycle detection
+Undo/Redo functionality for smooth and flexible editing
+Dual workflow modes: Build and Review
+Simulation engine for testing workflow execution
+Modular and extensible component-based architecture
 
-### Required Features
+Bonus Features:
 
-- Three-panel layout with a left node palette, central workflow canvas, and right configuration panel.
-- React Flow canvas with custom nodes, edges, background, controls, and minimap.
-- Drag-and-drop node creation from the palette.
-- Supported node types: Start, Task, Approval, Automated Step, and End.
-- Zustand-backed workflow state for nodes, edges, selection, validation, history, and editor actions.
-- Node selection with contextual configuration forms.
-- Dynamic forms based on node type.
-- Real-time validation for workflow structure and required node configuration.
-- Workflow simulation with step-by-step execution output.
-- JSON export and import with basic structure validation.
-- Auto layout for arranging workflow nodes in a readable top-to-bottom flow.
+Interactive sandbox environment for experimenting with workflows
+Built-in performance insights and analytics
+Easily extendable node system for custom workflow requirements
+Clear separation between UI, business logic, and data layers
+Architecture Diagram
 
-### Bonus Features
+The system follows a layered frontend architecture to ensure scalability and maintainability: 
+<img src="hr-workflow-designer/images/architechture.png" width="600" height="400" />
 
-- Undo and redo using snapshot-based workflow history.
-- Workflow templates for Onboarding Flow and Leave Approval Flow.
-- Lightweight per-node version history for configuration changes.
-- Mock API integration for Automated Step actions.
-- Validation indicators directly on affected nodes.
-- Clean Recent Changes panel that records meaningful field updates after editing is complete.
 
-## Tech Stack
+Application Layer – Manages overall orchestration and state flow
+UI Components – Includes canvas, nodes, forms, and panels
+Business Logic – Handles validation and workflow processing
+API Layer – Provides a mock backend for simulation
+Data & Types – Structured using TypeScript models
+External Libraries – Utilizes React and graph rendering tools
 
-- React 19
-- TypeScript
-- Vite
-- React Flow
-- Zustand
-- ESLint
 
-## Architecture Overview
+Workflow Diagram
+<img src="hr-workflow-designer/images/workflow.jpeg" width="600" height="400" />
 
-The project is organized by responsibility to keep UI, state, types, and workflow logic separate.
+This diagram illustrates how workflows are created and executed:
 
-- `src/components`: Layout, palette, canvas, config panel, forms, simulation panel, validation summary, and JSON import/export UI.
-- `src/nodes`: Custom React Flow node renderer, node type registration, and node factory helpers.
-- `src/store`: Zustand workflow store for graph state and editor actions.
-- `src/types`: Shared workflow, automation, and template types.
-- `src/utils`: Workflow validation, simulation, serialization, history, auto layout, and template insertion utilities.
-- `src/api`: Mock automation API for Automated Step configuration.
-- `src/templates`: Reusable workflow template definitions.
-- `src/hooks`: Shared UI hooks, including local draft state for form editing.
+Nodes are dragged from the palette onto the canvas
+Each node is configured through dedicated form panels
+The system performs real-time validation of the workflow
+The workflow is executed using the simulation engine
+Results are displayed through insights and performance metrics
+Preview
 
-Core workflow state lives in the Zustand store. UI components call store actions instead of owning graph logic directly. Workflow utilities are kept outside components so validation, simulation, import/export, auto-layout, and history can be reused consistently.
+The application provides an interactive interface for building and testing workflows:
 
-## How to Run Locally
+Visual canvas for designing workflows
+Sidebar panels for configuration and analytics
+Simulation panel for execution feedback
+Preview Photo
+<img src="hr-workflow-designer/images/preview.png" width="600" height="400" /> 
 
-Install dependencies:
+What You See in the Preview Photo
 
-```bash
+A central canvas displaying nodes and their connections
+A left-side palette for dragging workflow elements
+A right-side panel for configuration and insights
+Controls for switching modes and managing workflows
+Simulation output along with performance metrics
+
+
+How to Run
+# Clone the repository
+git clone <repo-url>
+
+# Navigate into the project directory
+cd <project-folder>
+
+# Install dependencies
 npm install
-```
 
-Start the development server:
-
-```bash
+# Start the development server
 npm run dev
-```
 
-Build for production:
 
-```bash
-npm run build
-```
+Tech Stack
 
-Run lint checks:
+Frontend: React + TypeScript
+State Management: Custom implementation with undo/redo support
+Graph Rendering: React Flow (@xyflow/react)
+Styling: CSS and UI libraries
+API: Mock API used for simulation
 
-```bash
-npm run lint
-```
+Design Decisions
 
-Preview the production build:
+Developed using a component-driven architecture for scalability
+Maintains clear separation of concerns across UI, logic, and data
+Uses centralized state management to ensure workflow consistency
+Validation is implemented as an independent module for reusability
+Mock API layer decouples frontend from backend dependencies
+Designed to be easily extensible for future workflow enhancements
 
-```bash
-npm run preview
-```
+What’s Completed
 
-## Demo Steps
+Fully functional workflow builder (nodes and edges)
+Node configuration and editing system
+Core validation engine
+Simulation sandbox environment
+Modular and maintainable project structure
+Key user interactions such as drag, connect, and edit
 
-1. Start the app with `npm run dev`.
-2. Drag a Start node from the left palette into the canvas.
-3. Add Task, Approval, Automated Step, and End nodes.
-4. Connect the nodes in order from Start to End.
-5. Select each node and edit its configuration in the right panel.
-6. For an Automated Step, choose an action and fill in its generated parameters.
-7. Confirm validation status near the workflow action buttons.
-8. Click Run Simulation to view the ordered execution log.
-9. Click Auto Layout to arrange the graph vertically.
-10. Use Export JSON to copy the workflow definition.
-11. Use Import JSON to paste a valid workflow back into the editor.
-12. Try Undo and Redo after creating nodes, editing config, connecting nodes, importing JSON, or applying auto layout.
-13. Insert the Onboarding Flow or Leave Approval Flow template from the palette and run the same validation/simulation flow.
+Future Enhancements
 
-## Design Decisions
-
-- React Flow is used for graph rendering because it provides reliable node positioning, connections, controls, minimap support, and drag-and-drop integration.
-- Zustand is used for workflow state because the editor needs shared state across the canvas, config panel, validation summary, simulation panel, and import/export controls.
-- Node configuration forms are split by node type to keep each form small and extensible.
-- Workflow validation, simulation, serialization, auto layout, and template insertion live in utility modules instead of UI components.
-- Node version history records changes on blur rather than on every keypress so the Recent Changes panel stays readable.
-- Undo and redo use workflow snapshots for predictable restoration across different editor actions.
-- Automated Step actions are loaded through a mock API module to keep integration boundaries clear.
-
-## Assumptions
-
-- A valid workflow has exactly one Start node and at least one End node.
-- The current traversal model expects a simple connected flow from Start toward End.
-- Start nodes are limited to one per workflow.
-- Task and Approval nodes can be repeated.
-- End nodes can be repeated.
-- Automated Step actions are mocked locally and do not call a real backend.
-- Imported workflows are trusted after structural validation and are not persisted to a database.
-- Node version history is intended for lightweight visibility, not full audit compliance.
-
-## Known Limitations
-
-- Workflow traversal is intentionally simple and does not fully support complex branching, loops, or parallel execution.
-- Validation covers core structure and required fields but is not a complete business-rules engine.
-- Import validation protects against malformed JSON and invalid node types, but it does not deeply validate every possible field shape.
-- Changes are stored in memory only; refreshing the page clears the current workflow.
-- Version history tracks configuration updates only and does not track node movement or edge changes.
-- Automated Step integration uses mock data only.
-- The configuration panel is functional but intentionally minimal in visual complexity.
-
-## Future Improvements
-
-- Add persistent storage for saved workflows.
-- Support branching conditions and decision nodes.
-- Add richer validation rules for HR-specific workflow policies.
-- Add template preview before insertion.
-- Add workflow names, metadata, and save/load management.
-- Add export formats beyond JSON, such as image or PDF.
-- Add collaborative editing and role-based permissions.
-- Add real API integration for automations, assignees, roles, and HR systems.
-- Add unit tests for workflow utilities and component tests for key editor flows.
-- Improve accessibility and keyboard-first graph editing.
+Integration with a real backend and persistent storage
+Role-based access control and workflow permissions
+Advanced analytics and reporting capabilities
+Real-time collaboration with multi-user editing
+Workflow versioning and history tracking
+Plugin system for custom nodes and actions
+Performance optimizations for handling large-scale workflows
