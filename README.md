@@ -35,6 +35,7 @@ External Libraries – Utilizes React and graph rendering tools
 
 
 Workflow Diagram
+
 <img src="hr-workflow-designer/images/workflow.jpeg" width="600" height="400" />
 
 This diagram illustrates how workflows are created and executed:
